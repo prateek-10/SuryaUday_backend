@@ -16,7 +16,7 @@ function authenticateToken(req, res, next) {
 
   jwt.verify(token, secretKey, (err, user) => {
     if (err) {
-      return res.status(403).json({ message: "Forbidden: Invalid Token " });
+      return res.status(403).json({ message: "Forbidden: Invalid token" });
     }
     req.user = user;
     next();
@@ -24,7 +24,11 @@ function authenticateToken(req, res, next) {
 }
 
 function verifyToken(token) {
-  return jwt.verify(token, secretKey);
+  try {
+    return jwt.verify(token, secretKey);
+  } catch (error) {
+    throw new Error("Invalid token");
+  }
 }
 
 module.exports = { authenticateToken, verifyToken };

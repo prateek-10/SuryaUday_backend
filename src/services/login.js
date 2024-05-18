@@ -9,10 +9,16 @@ async function login(email, password) {
     if (!existingUser) {
       throw new Error("User not found");
     }
-    const isPasswordValid = bcrypt.compare(password, existingUser.password);
+
+    // Await the bcrypt comparison
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
     if (!isPasswordValid) {
       throw new Error("Incorrect Password");
     }
+
     const token = generateToken(existingUser);
     return token;
   } catch (error) {
@@ -24,14 +30,18 @@ async function login(email, password) {
 async function refreshToken(oldToken) {
   try {
     const decodedToken = verifyToken(oldToken);
-    const user = User.findById(decodedToken._id);
+
+    // Await the user retrieval
+    const user = await User.findById(decodedToken._id);
     if (!user) {
-      throw new error("User not found");
+      throw new Error("User not found");
     }
+
     const newToken = generateToken(user);
     return newToken;
   } catch (error) {
-    throw new error("Invalid token");
+    console.log("Refresh token error:", error.message);
+    throw new Error("Invalid token");
   }
 }
 
