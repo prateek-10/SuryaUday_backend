@@ -6,7 +6,6 @@ mongoose.connect(
     serverSelectionTimeoutMS: 5000,
   }
 );
-// mongodb+srv://prateek10:s9TagaJj4NsXRKoh@gymkhana.unvj6or.mongodb.net/?retryWrites=true&w=majority&appName=GymKhana
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB");
